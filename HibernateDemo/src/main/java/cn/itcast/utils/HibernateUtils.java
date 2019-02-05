@@ -23,4 +23,17 @@ public class HibernateUtils {
     public static SessionFactory getSessionFactory(){
         return sessionFactory;
     }
+
+    /**
+     * 获取与本地线程绑定的sesison对象(保证是单线程的）
+     * 注意：前提是需要先在核心配置文件中配置
+     * @return
+     */
+    public static Session getLocalSession(){
+        return sessionFactory.getCurrentSession();
+    }
+
+    public static void main(String[] args ){
+
+    }
 }

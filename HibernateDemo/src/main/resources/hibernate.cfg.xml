@@ -22,7 +22,12 @@
          -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 
+        <!-- 配置session对象与本地线程绑定  保证session是一个单线程对象 -->
+        <property name="hibernate.current_session_context_class">thread</property>
+
         <!-- 第三部分：配置把映射文件放到核心配置文件中（必须的） -->
         <mapping resource="cn.itcast.entity/User.hbm.xml"/>
+        <mapping resource="cn.itcast.entity/Customer.hbm.xml"/>
+        <mapping resource="cn.itcast.entity/LinkMan.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

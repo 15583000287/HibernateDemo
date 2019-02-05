@@ -1,0 +1,290 @@
+a使用Hibernate步骤：
+
+1.导入相关jar包 (特别是jdbc驱动包别忘了)
+
+2.新建实体类 (Hibernate要求实体类有一个属性唯一值，要求表有一个字段唯一值)
+	注：使用Hibernate不需要自己创建表，Hibernate会根据实体类自动帮我们创建表。
+
+3.配置orm关系，即实体类属性与数据库字段的映射关系 (xml配置文件实现映射关系)
+	a.创建xml映射配置文件(文件名和位置没有固定要求)
+		建议命名：实体类名.hbm.xml     hbm:hibernate mapping
+
+
+4.创建Hibernate的核心配置文件
+	a.核心配置文件的格式：xml  文件名称和位置是固定的
+	  -位置：必须在src目录下
+	  -名称：必须hibernate.cfg.xml
+
+
+Configuration对象：
+	Configuration cfg = new Configuration();
+        cfg.configure();
+	加载配置文件
+
+SessionFactory对象：
+	创建耗时，建议一个项目一个对象，用工具类创建
+	创建好了，不要关闭，不然别人不能使用
+	此过程创建了表(前提设置了<property name="hibernate.hbm2ddl.auto">update</property>)
+
+
+Session对象：
+	类似于jdbc的Connection
+	单线程
+	save() update() saveOrUpdate() get(int id) ...等方法
+
+Transaction对象：
+	beginTransaction() 开启事务
+	commit()
+	rollback() 异常时，回滚
+
+
+实体类编写规则：
+	遵循JavaBean规范
+	保证有唯一属性 （hiberante要求实体类有一个属性是唯一的）
+		其他方式：位置属性定义为String类型，自动生成UUID
+	建议使用包装类型
+
+
+Hibernate主键生成策略：
+	1.hibernate要求实体类里面有一个属性作为唯一值，
+	  对应表的主键，主键可以不同生成策略。
+	2.生成策略
+	   <id name="id" column="id">
+                <generator class="native"/>
+           </id>
+	   increment  eg:增量
+	   identity  mysql使用，oracle不能用   eg:省份，同一性
+	   sequence  oracle使用    eg:序列，顺序 se,kun,si
+	   native    根据使用的数据库，帮我们选择使用哪个值(掌握)
+           uuid	     Hibernate自动帮我们生成uuid值(掌握)
+	使用uuid策略：
+	   实体类唯一属性定义为String类型
+	   修改mapping配置文件<generator class="uuid"/>
+
+
+
+
+Session实现类操作：
+	save(Entity entity)  	无论是否存在id,都save操作
+
+	get(Entity.class,Interget id)	根据id查询
+
+	update()  先get,设置值，再update
+		  执行过程：得到user里面的id值，根据id进行修改（更新为传入的对象）
+
+	saveOrUpdate 存在主键则update，不存在主键则save
+
+	delete()   删除  1:先get,再delete    2:创建要删除的对象，设置id值
+
+
+
+实体类对象的状态（3种）：
+	1.瞬时态（对象里没有id，对象与session没有关联）save前
+
+	2.持久态（对象里有id值，对象与session有关联）  get后
+
+	3.托管态 （对象里有id值，对象与session没有关联） 用的少(新建对象，set值)
+
+	saveOrUpdate 存在主键(托管态，持久态 )则update，不存在主键(瞬时态)则save
+############# Hibernate #################
+
+
+Hibernate的一级缓存（Session范围）：
+	缓存：把数据存到内存中，可以直接读取，不需要IO流方式
+	hibernate框架中提供了很多优化方式，hibernate的缓存就是一个优化方式
+
+	*特点：hibernate的一级缓存默认打开
+	      hibernate的一级缓存使用范围(是session的范围，从session创建到session.close的过程)
+              存储数据必须是*持久态*数据
+	验证：做两次查询并输出，看发送了几条sql语句
+	执行过程：第一次查询，根据id查询一级缓存，没有，查询数据库，得到对象存到一级缓存，并将对象存到一级缓存对应的快照区(副本)内
+		  第二次查询，根据id查询一级缓存，有，返回对象
+        一级缓存存储方式：将对象的值存到一块内存空间，取一个编号(id=1),查询到了再还原成对象
+	注意：两次查询返回的不是一个对象
+
+Hibernate一级缓存特性：
+	1.持久态自动更新数据库
+		 User user = (User) session.get(User.class,2);
+        	 user.setUsername("一级缓存特性");  //会导致数据库更新
+	2.执行过程(了解)
+		创建session对象，创建一级缓存，根据一级缓存创建快照区(副本)
+		执行过程：修改user对象里面的值，修改持久态对象的值，同时修改一级缓存中的内容，#但不会修改一级缓存对应的快照区的内容#
+		提交事务时：比较一级缓存内容和对应快照区内容是否相同。不同，把一级缓存里的内容更新到数据库里去；相同则不会更新数据库
+
+
+Hibernate的二级缓存：
+	目前已经不使用了，替代技术 redis
+        二级缓存默认不是打开，需要配置
+	二级缓存使用范围(SessionFactory范围   从SessionFactoty创建到关闭的过程)
+
+
+
+
+
+
+
+
+
+
+
+Hibernate事务规范写法：
+	1.事务是操作中最基本的单元，保证同时成功或失败(转账)
+	2.事务的ACID特性
+	3.不考虑隔离性产生问题：
+	    a.脏读
+            b.不可重复读
+	    c.虚读
+        4.设置事务隔离级别
+	    mysql默认隔离级别 repeatable read
+    结构：
+	try{
+	    Trasaction tx = session.beginTransaction()  //开启事务
+	    //crud操作
+            tx.commit();    //提交事务
+	}catch(){
+	    tx.rollback();  //回滚
+	}finally{
+	    //关闭session  sessionFactory
+	}
+
+
+Hibernate绑定session(将session与本地线程绑定):
+	1.session类似于jdbc的Connection ,web阶段的threadLocal
+	2.帮我们实现与本地线程绑定session（底层threadLocal）
+	3.获取本地线程session
+		a.核心配置文件中配置session对象与本地线程绑定  保证session是一个单线程对象
+        <property name="hibernate.current_session_context_class">thread</property>
+		b.调用sessionFactory中的getCurrentSession方法
+	4.获取与本地线程绑定session的时候，手动关闭session报错
+		原因：线程执行完session将自动关闭，不需要手动关闭。
+
+
+Hibernate的api使用：
+	Query对象（hql语句）
+		1.使用query对象，不需要写sql语句，但是要写hql语句
+		2.hql和sql语句区别(sql操作表和字段，hql操作实体和属性)
+	    	  查询hql语句：form 实体类名
+		  a.创建Query对象,方法里写hql语句
+            	  Query query = session.createQuery("from User");
+                  b.调用Query方法得到结果
+                  List<User> users = query.list();
+
+	Criteria对象(调用方法)   eg:标准,条件
+		1.使用这个对象查询操作，不需要写语句，直接调用方法即可。
+		Criteria criteria = session.createCriteria(User.class);  //实体类.class
+		List<User> liset = criteria.list();
+
+	SQLQuery对象（sql语句）
+		SQLQuery sqlQuery = session.createSQLQuery("select * from user");
+		List<Object[]> list = sqlQuery.list();
+		注意：list里面得到的每个元素是数组
+
+		解决方案：sqlQuery.addEntity(User.class); 设置用什么类型接收，即结果集元素类型
+		List<User> list = sqlQuery.list();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+表之间的关系：
+	一对一
+	一对多
+	多对多
+
+
+Hibernate的一对多操作（重点）
+一对多的映射配置(客户和联系人)
+	1.创建两个实体类
+	2.让两个实体类之间互相表示
+	    a.在客户实体里表示多个联系人
+	    b.在联系人实体里表示所属客户
+	3.配置映射关系
+	    a.一般一个实体类对应一个映射文件
+	    b.完成映射的基本配置
+	    c.配置一对多的映射
+		一： <set name="setLinkMan">
+                        <key column="clid"></key>
+                        <!-- 客户所有的联系人,class里面写联系人实体类的全路径 -->
+                        <one-to-many class="cn.itcast.entity.LinkMan"></one-to-many>
+                     </set>
+		多：
+		    表示联系人所属客户
+             	    name属性：因为联系人实体类使用customer对象表示，写customer属性名
+             	    class属性：Customer全路径
+                    column属性：外键名称（一的配置中设置的外键名 即Customer.hbm.xml中）
+        	    <many-to-one name="customer" class="cn.itcast.entity.Customer" column="clid"/>
+	4.将映射配置文件引入核心配置文件
+
+
+一对多级联操作：
+    1.级联保存
+	a.添加一个客户，为这个客户添加多个联系人
+	  为每一个联系人，set客户
+	b.简化写法（推荐）
+	  一般根据客户添加联系人
+	  I:在客户映射文件中set标签进行配置
+	     <set name="setLinkMan" cascade="save-update">
+	  II:创建客户和联系人，将联系人放到客户中去，save客户即可
+
+    2.级联删除
+	删除某一个客户，这个客户里面的联系人都要删除
+	I:在客户映射文件中set标签进行配置
+	  <set name="setLinkMan" cascade="save-update,delete">
+	II:在代码中直接删除客户
+	   根据id查询对象,调用session里面的delete方法
+	   步骤：根据cid查客户，根据(外键=cid)查询联系人，将联系人外键设置null,删除联系人和客户
+
+
+    3.一对多操作(inverse属性)
+	场景：将李彦宏设置为传智博客的联系人
+        1.将客户和联系人都查询出来
+            Customer itcast = (Customer) session.get(Customer.class,1);
+            LinkMan liyanhong = (LinkMan) session.get(LinkMan.class,3);
+        2.设置持久态对象值
+          将联系人放到客户里面（持久态对象的跟新会导致数据库跟新）
+            itcast.getSetLinkMan().add(liyanhong);
+          把客户放到联系人里面
+            liyanhong.setCustomer(itcast);
+	外键修改了两次：
+	    因为hibernate是双向维护外键,在客户和联系人里面都需要维护，
+	    修改客户的时候改了一次外键，修改联系人的时候改了一次外键，所以造成了性能的问题。
+	    解决：
+		让其中一方不维护外键(一的那方放弃维护外键)
+		<set name="setLinkMan" cascade="save-update,delete" inverse="false">
+		inverse属性：false 不放弃维护外键(默认)
+	                      true 放弃维护主键
+
+
+
+
+Hibernat多对多操作：
+    多对多映射配置(用户和角色为例)
+    1.创建实体类，用户和角色
+    2.让两个实体类之间相互表示
+	a.一个角色有多个用户，使用set集合
+	b.一个用户有多个角色，使用set集合
+    3.配置映射关系
+	a.基本关系
+        b.多对多关系
+    4.在核心配置文件中引入映射文件
+
+多对多级联保存
+
+多读多级联删除
+
+如何维护第三张表
+         
+						
+			
+			
