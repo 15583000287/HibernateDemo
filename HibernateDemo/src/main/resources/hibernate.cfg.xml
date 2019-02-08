@@ -26,8 +26,11 @@
         <property name="hibernate.current_session_context_class">thread</property>
 
         <!-- 第三部分：配置把映射文件放到核心配置文件中（必须的） -->
-        <mapping resource="cn.itcast.entity/User.hbm.xml"/>
-        <mapping resource="cn.itcast.entity/Customer.hbm.xml"/>
-        <mapping resource="cn.itcast.entity/LinkMan.hbm.xml"/>
+        <!--<mapping resource="cn/itcast/entity/User.hbm.xml"/>-->
+        <mapping resource="cn/itcast/entity/Customer.hbm.xml"/>
+        <mapping resource="cn/itcast/entity/LinkMan.hbm.xml"/>
+        <mapping resource="cn/itcast/manytomany/User.hbm.xml"/><!--用户角色实体-->
+        <mapping resource="cn/itcast/manytomany/Role.hbm.xml"/>
+
     </session-factory>
 </hibernate-configuration>

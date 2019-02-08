@@ -268,23 +268,157 @@ Hibernate的一对多操作（重点）
 
 
 
-Hibernat多对多操作：
+Hibernat多对多操作(##级联操作维护第三张表即可##)：
     多对多映射配置(用户和角色为例)
     1.创建实体类，用户和角色
     2.让两个实体类之间相互表示
-	a.一个角色有多个用户，使用set集合
-	b.一个用户有多个角色，使用set集合
+	    a.一个角色有多个用户，使用set集合
+	    b.一个用户有多个角色，使用set集合
     3.配置映射关系
-	a.基本关系
+	    a.基本关系
         b.多对多关系
+            -在用户里表示所有角色，使用set集合
+            -在角色里表示所有用户，使用set集合
     4.在核心配置文件中引入映射文件
 
 多对多级联保存
+    根据用户保存角色
+    第一步：在用户配置文件中set标签进行配置cascade属性值 save-update
+    第二步：代码实现
+            创建用户和角色对象，把角色放到用户里面，最终保存用户即可
 
-多读多级联删除
+多对多级联删除(##多对多一般不使用级联删除，一般维护第三张表##)
+    第一步：在set标签进行配置，cascade属性值 delete
+                cascade="save-update,delete"
+    第二步：删除用户
+            User user = session.get(User.class,1);
+            session.delete(user);
 
-如何维护第三张表
-         
-						
-			
+####
+如何维护第三张表(替代多对多的级联删除)
+    1.用户和角色是多对多的关系，维护关系通过第三张表。
+    案例：（原理：持久态对象的跟新会导致数据库的跟新--提交事务后，会比较一级缓存与快照区内容是否一致，不一致跟新数据库）
+    2.让某个用户有某个角色
+        a.根据id查询用户和角色
+        b.把角色放到用户里面(把角色对象放到用户set集合)
+    3.让某个用户没有某角色
+        a.根据id查询用户和角色
+        b.从用户的set集合里面把角色移除(remove方法)
+
+
+
+
+
+
+
+
+
+
+################# Hibernat 查询方式 ################
+1.对象导航查询
+    根据id查询出某个客户，再查询这个客户里所有的联系人(直接获取set集合即可)
+
+2.OID(Object Identifier)查询
+    根据id查询某一条记录，返回对象(调用session里面的get方法)
+
+3.HQL查询（Query对象）
+    使用Query对象，写hql语句实现查询(创建query对象时写入hql语句，调用query对象的方法得到结果)
+    hql与sql非常相似，hql操作实体类和属性，sql操作表和字段
+    a.查询所有
+        from User
+    b.条件查询--模糊查询
+        from 实体类名 where 属性名=？and 属性名=？
+        //创建query对象
+           Query query = session.createQuery("from User u where u.user_id=?");
+        //给模板设置参数
+           query.setParameter(0,1); //与jdbc模不一样，？的位置是从0开始的
+           List<User> userList = query.list();
+
+    c.排序查询
+        from 实体类名称 order by 实体类属性名 asc/desc
+    d.分页查询
+        在hql操作中，在语句里面不能出现limit关键字，直接使用query对象设置分页数据即可。
+        //创建query对象
+            Query query = session.createQuery("from User");
+        //设置分页参数
+            query.setFirstResult(0);//开始位置
+            query.setMaxResults(2);//每页记录数
+            List<User> userList = query.list();
+    e.投影查询（ 指定查询字段，不支持*
+                ##结果使用List<Object>##
+                ##查询多个字段使用List<Object[]>接收）##
+        查询的不是所有字段值，而是部分字段值(即指定查询字段)
+        select u.user_id from User u;
+        注意:不支持select * ，接收结果泛型不能使用实体类，使用List<Object>
+    f.聚合(集)函数使用
+        1.count sum avg max min
+        2.hql聚合函数语句写法
+          select count(*) from 实体类名称
+          Query query = session.createQuery("select count(*) from User");
+          Long count = (Long) query.uniqueResult();//使用uniqueResult()方法
+          int c = count.intValue(); //得到的结果是需要先转成long，再转成int
+
+4.QBC(Query By Criteria) 查询
+    Criteria对象(使用方法完成查询,操作实体类完成，不需要sql或hql)
+    a.查询所有
+        Criteria criteria = session.createCriteria(User.class);
+        List<User> userList = criteria.list();
+    b.条件查询
+        Criteria criteria = session.createCriteria(User.class);  //创建Criteria对象
+        //添加条件(属性名，值)
+        //criteria.add(Restrictions.eq("user_id",1));
+        criteria.add(Restrictions.like("user_name","%张%"));
+        List<User> userList = criteria.list();
+    c.排序查询
+        Criteria criteria = session.createCriteria(User.class);  //创建Criteria对象
+        //添加排序条件
+        criteria.addOrder(Order.desc("user_id"));
+        List<User> userList = criteria.list();
+    d.分页查询
+        Criteria criteria = session.createCriteria(User.class);  //创建Criteria对象
+        //设置分页数据
+        criteria.setFirstResult(0);
+        criteria.setMaxResults(4);
+        List<User> userList = criteria.list();
+        当前位置公式：（当前页-1）* 每页数量
+    e.统计查询（setProjection方法）
+        Criteria criteria = session.createCriteria(User.class);  //创建Criteria对象
+        //设置统计操作 Projections
+        criteria.setProjection(Projections.rowCount());
+        Long count = (Long)criteria.uniqueResult();
+        int c = count.intValue();
+    f.离线查询(进行前序操作时不需要session对象，执行的时候才用到session对象)
+        servlet调用service, service调用dao
+        dao里面进行crud操作，dao里使用hibernate框架的时候，调用session里面的方法实现功能。
+        代码：
+        //创建detachedCriteria对象，设置查询规则
+        DetachedCriteria detachedCriteria  = DetachedCriteria.forClass(User.class);
+        detachedCriteria.addOrder(Order.desc("user_id")); //设置排序规则
+        //最终执行的时候才需要用到session
+        Criteria criteria = detachedCriteria.getExecutableCriteria(session);
+        List<User> userList = criteria.list();
+        注意：
+           我们设置一些查询条件时，只需要创建DetachedCriteria对象，调用方法设置即可；
+           最终执行的时候才需要用到session对象
+           ######################################################################
+
+5.本地SQL查询
+    SQLQuery对象，使用普通sql实现查询
+
+
+
+
+
+####################### Hibernate多表查询 ############################
+MySQL中多表查询
+    内连接 inner join ... on
+    左外连接 left outer join ... on
+    右外连接	 right outer join ... on
+
+HQL实现多表查询
+    内连接
+    左外连接
+    右外连接
+    迫切内连接(hibernate特有)
+    迫切左外连接(hibernate特有)
 			

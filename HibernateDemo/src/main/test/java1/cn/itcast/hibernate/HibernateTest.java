@@ -1,7 +1,6 @@
 package java1.cn.itcast.hibernate;
 
 import cn.itcast.entity.User;
-import cn.itcast.utils.HibernateUtils;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import org.junit.Test;
