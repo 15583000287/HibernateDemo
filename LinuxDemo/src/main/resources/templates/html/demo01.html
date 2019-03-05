@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-ch">
+	<head>
+		<meta charset="utf-8" />
+		<!--屏幕和设备的屏幕保持一致，初始缩放为1:1，禁止用户缩放-->
+		<meta name="viewport" content="width=device-width,
+			initial-scale=1,user-scalable=no" />
+		<title>引入bootstrap</title>
+		<!--引入外部的bootstrap中的css文件-->
+		<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+		<!--jQuery文件。务必在bootstrap.min.js 之前引入-->
+		<script src="../bootstrap/js/jquery.min.js"></script>
+		<!--再引入bootstrap.min.js文件-->
+		<script src="../bootstrap/js/bootstrap.min.js"></script>
+	</head>
+	<body style="background: gray;">
+		<div class="container" style="background: white"> <!-- 固定宽度 1170px-->
+			大家好
+		</div>
+		<div class="container-fluid" style="background: white"> <!-- 宽度100%-->
+			<h1 class="page-header text-center"><big>产品</big>展示</h1>
+			<h3 class="page-header text-right">新闻<small>内容</small></h3>
+			<p><em>大家来放到教练</em>说多捡垃圾父类数据都废了链接是辅导
+			老师打飞机加分都说了梵净冷杉反倒
+			是减肥减<del>肥了</del>是豆腐了老师的解放路的积分
+			</p>
+			<p class="text-uppercase"><em>大家来放到教练</em>说多捡垃html类数据都废了链接是辅导
+			老师打hello加分都说了梵净冷杉反倒
+			是减肥减<del>肥了</del>是豆腐了老师的解放路的积分
+			</p>
+			<h3 class="page-header">列表</h3>
+			<ul class="list-unstyled list-inline">
+				<li>html</li>
+				<li>css</li>
+				<li>php</li>
+				<li>java</li>
+			</ul>
+			
+			<h3 class="page-header">自定义列表</h3>
+			<dl class="dl-horizontal">
+				<dt>标题</dt>
+				<dd>标题解释</dd>
+				<dt>标题</dt>
+				<dd>标题解释</dd>
+				<dt>标题</dt>
+				<dd>标题解释</dd>
+			</dl>
+			<h3 class="page-header">表格</h3>
+			<div class="table-responsive">
+			<table class="table table-bordered table-hover table-striped
+			table-condensed">
+				<tr class="active">
+					<td>编号</td>
+					<td>产品名称</td>
+					<td>状--------------态</td>
+				</tr>
+				<tr class='success'>
+					<td>0001</td>
+					<td>奥迪</td>
+					<td>未发货</td>
+				</tr>
+				<tr class="info">
+					<td>0002</td>
+					<td>奥拓</td>
+					<td>已发货</td>
+				</tr>
+				<tr class="danger">
+					<td>0003</td>
+					<td>奥拓</td>
+					<td>已退货</td>
+				</tr>
+				<tr class="warning">
+					<td>0004</td>
+					<td>绿箭</td>
+					<td>未发货</td>
+				</tr>
+			</table>
+			</div>
+		</div>
+		
+	</body>
+</html>

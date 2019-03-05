@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<meta charset="utf-8" />
+		<title>建群组</title>
+		<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
+		<script src="https://heerey525.github.io/layui-v2.4.3/layui-v2.4.5/layui.js"></script>
+		<link rel="stylesheet" href="https://heerey525.github.io/layui-v2.4.3/layui-v2.4.5/css/layui.css">
+	</head>
+
+	<body>
+		<ul class="layui-nav" lay-filter="">
+		  <li class="layui-nav-item" style="none">
+			<a href="">
+				<i class="layui-icon layui-icon-diamond" style="font-size: 30px; color: #1E9FFF; font-family:"Times New Roman",Georgia,Serif">&nbsp;&nbsp;<span style="font-size:25px">建群组</span></i> 
+			</a>
+		  </li>
+		  <li class="layui-nav-item layui-this"><a href="">产品</a></li>
+		  <li class="layui-nav-item"><a href="">大数据</a></li>
+		  <li class="layui-nav-item">
+			<a href="javascript:;">解决方案</a>
+			<dl class="layui-nav-child"> <!-- 二级菜单 -->
+			  <dd><a href="https://www.baidu.com">移动模块</a></dd>
+			  <dd><a href="">后台模版</a></dd>
+			  <dd><a href="">电商平台</a></dd>
+			</dl>
+		  </li>
+		  <li class="layui-nav-item"><a href="">社区</a></li>
+</ul>
+ <li><button class="layui-button"/></li>
+<script>
+//注意：导航 依赖 element 模块，否则无法进行功能性操作
+layui.use('element', function(){
+  var element = layui.element;
+  
+  //…
+});
+</script>
+	
+
+
+	</body>
+
+</html>
