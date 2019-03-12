@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@Controller
+@RestController
 public class DemoApplication {
 
     public static void main(String[] args) {
@@ -15,12 +15,11 @@ public class DemoApplication {
     }
 
     /**
-     * 准发到主页index.html
+     * 测试热启动
      */
-    @RequestMapping("")
-    public String ftlIndex() {
-        System.out.println("index");
-        return "html/index";
+    @RequestMapping("/hello")
+    public String hello() {
+        return "hello spring boot!";
     }
 
 

@@ -21,42 +21,52 @@
 		<script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
 		<script src="https://heerey525.github.io/layui-v2.4.3/layui-v2.4.5/layui.js"></script>
 		<link rel="stylesheet" href="https://heerey525.github.io/layui-v2.4.3/layui-v2.4.5/css/layui.css">
+		<style>
+		
+		</style>
 	</head>
 	<body>
 		<div class="container" style="background: #e6e6e6">
 			<div class="row">
-				<!-- <div class="col-lg-4"></div>
+				<div class="col-lg-4"></div>
 				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-10">
-					
+					<form class="form-horizontal" action="" method="post">
+						<div class="form-group"><!-- 下内边距 -->
+							<div class="input-group"><!-- 合并成一组 -->
+								<span class="input-group-addon"> <!-- 设置样式-->
+									<span class="glyphicon glyphicon-user"></span> <!-- 文字替换成图标 用span设置 -->
+								</span>
+								<input type="text" name="username" placeholder="输入用户名" class="form-control" ><!-- 圆角边框 -->
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-lock"></span>
+								</span>
+								<input type="password" name="password" placeholder="请输入密码" class="form-control">
+							</div>
+						</div>
+							<div class="text-center" style="width: 100%;">
+								<input type="submit" value="登录" class="btn btn-info btn-sm">
+								<a href="#" id="register">还没有账号？去注册</a>
+							</div>
+					</form>
 				</div>
-				<div class="col-lg-4"></div> -->
-				<ul class="layui-nav" lay-filter="">
-				  <li class="layui-nav-item" style="none">
-					<a href="">
-						<i class="layui-icon layui-icon-diamond" style="font-size: 30px; color: #1E9FFF; font-family:"Times New Roman",Georgia,Serif">&nbsp;&nbsp;<span style="font-size:25px">建群组</span></i> 
-					</a>
-				  </li>
-				  <li class="layui-nav-item"><a href="#" id="login">登录</a></li>
-				  <li class="layui-nav-item"><a href="#" id="register">注册</a></li>
-				</ul>
-
+				<div class="col-lg-4"></div>
 			</div>
 		</div>
 	</body>
 	<script>
 		$(function(){
-			$("#login").click(function(){
-				layer.open({
-					title: "登录",
-				type: 2, 
-				content: "html/login.html"
-				});
-			})
 			$("#register").click(function(){
-				layer.open({
+				var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+				parent.layer.close(index); //再执行关闭
+				parent.layer.open({
 					title: "注册",
-				  type: 2, 
-				  content: "html/register.html"
+					area: ['300px', '230px'],
+					type: 2,
+					content: "html/register.html"
 				});
 			})
 		})

@@ -34,6 +34,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- 热启动jar包 -->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-devtools</artifactId>-->
+            <!--<optional>true</optional>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
@@ -41,6 +47,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--热部署配置-->
+                <!--<configuration>-->
+                    <!--&lt;!&ndash;fork:如果没有该项配置,整个devtools不会起作用&ndash;&gt;-->
+                    <!--<fork>true</fork>-->
+                <!--</configuration>-->
             </plugin>
         </plugins>
     </build>

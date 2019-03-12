@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-ch">
+	<head>
+		<meta charset="utf-8" />
+		<!--屏幕和设备的屏幕保持一致，初始缩放为1:1，禁止用户缩放-->
+		<meta name="viewport" content="width=device-width,
+			initial-scale=1,user-scalable=no" />
+		<title>百度云群组分享-建群组</title>
+		<!--引入外部的bootstrap中的css文件-->
+		<!--<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">-->
+		<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
+
+		<!--jQuery文件。务必在bootstrap.min.js 之前引入-->
+		<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+
+		<!--再引入bootstrap.min.js文件-->
+		<!--<script src="../bootstrap/js/bootstrap.min.js"></script>-->
+		<script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+		<!-- 引入layui相关插件 -->
+		<script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
+		<script src="https://heerey525.github.io/layui-v2.4.3/layui-v2.4.5/layui.js"></script>
+		<link rel="stylesheet" href="https://heerey525.github.io/layui-v2.4.3/layui-v2.4.5/css/layui.css">
+		<style>
+			/*body{*/
+				/*margin-left: 20px;*/
+			/*}*/
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header" style="margin-left: 20%">
+					<a class="navbar-brand active" href="javascript:location.reload()">建群组</a>
+				</div>
+				<div>
+					<ul class="nav navbar-nav"  style="margin-left: 30%">
+						<li><a href="#" id="login">登录</a></li>
+						<li><a href="#" id="register">注册</a></li>
+						<!--<li class="dropdown">-->
+						<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">-->
+							<!--Java-->
+							<!--<b class="caret"></b>-->
+						<!--</a>-->
+							<!--<ul class="dropdown-menu">-->
+								<!--<li><a href="#">jmeter</a></li>-->
+								<!--<li><a href="#">EJB</a></li>-->
+								<!--<li><a href="#">Jasper Report</a></li>-->
+								<!--<li class="divider"></li>-->
+								<!--<li><a href="#">分离的链接</a></li>-->
+								<!--<li class="divider"></li>-->
+								<!--<li><a href="#">另一个分离的链接</a></li>-->
+							<!--</ul>-->
+						<!--</li>-->
+					</ul>
+				</div>
+			</div>
+		</nav>
+	<img src="img/jeep.jpg">
+	</body>
+	<script>
+		$(function(){
+			$("#login").click(function(){
+				layer.open({
+					title: "登录",
+				type: 2,
+				content: "html/login.html"
+				});
+			})
+			$("#register").click(function(){
+				layer.open({
+					title: "注册",
+					area: ['300px', '230px'],
+				  	type: 2,
+					content: "html/register.html"
+				});
+			})
+		})
+	</script>
+</html>
