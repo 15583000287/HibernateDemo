@@ -1,0 +1,43 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver #新的驱动类，是自动加载的，可以省略手动加载驱动类
+    url: jdbc:mysql://139.196.94.253:3306/jpa?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    database: mysql
+
+
+#上传文件配置 springboot2.0
+  servlet:
+    multipart:
+      max-file-size: 20MB #设置单个文件上传大小（默认10MB）
+      max-request-size: 200MB #设置一次请求上传文件的总容量
+
+
+#Oracle配置信息
+#spring:
+#  datasource:
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    driver-class-name: oracle.jdbc.driver.OracleDriver
+#    #url: jdbc:oracle:thin:@192.168.20.209:1521:payment
+#    url: jdbc:oracle:thin:@192.168.20.15:1521:mobopay2
+#    username: mobo2
+#    password: ZAQ!cde3XS$e
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#      naming:
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#    show-sql: true
+#    database-platform: org.hibernate.dialect.Oracle10gDialect
+#    database: oracle
