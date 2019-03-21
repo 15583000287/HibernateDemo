@@ -9,7 +9,6 @@ import java.util.Date;
 /**
  * 商户网站审核记录
  */
-@Data
 @DynamicUpdate //跟新数据时只会跟新发生改变的值
 @Entity
 @Table(name = "TSL_MERCHWEBAUDITRECORD")
@@ -84,4 +83,140 @@ public class MerchWebAudit {
      * 下载文件地址
      */
     private String uploadFile;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMerchCusNo() {
+        return merchCusNo;
+    }
+
+    public void setMerchCusNo(String merchCusNo) {
+        this.merchCusNo = merchCusNo;
+    }
+
+    public String getMerchName() {
+        return merchName;
+    }
+
+    public void setMerchName(String merchName) {
+        this.merchName = merchName;
+    }
+
+    public Date getSubmitDate() {
+        return submitDate;
+    }
+
+    public void setSubmitDate(Date submitDate) {
+        this.submitDate = submitDate;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getOfAgent() {
+        return ofAgent;
+    }
+
+    public void setOfAgent(String ofAgent) {
+        this.ofAgent = ofAgent;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getUrlCanOpen() {
+        return urlCanOpen;
+    }
+
+    public void setUrlCanOpen(String urlCanOpen) {
+        this.urlCanOpen = urlCanOpen;
+    }
+
+    public String getGoodsCanOrder() {
+        return goodsCanOrder;
+    }
+
+    public void setGoodsCanOrder(String goodsCanOrder) {
+        this.goodsCanOrder = goodsCanOrder;
+    }
+
+    public String getMerchBaseCase() {
+        return merchBaseCase;
+    }
+
+    public void setMerchBaseCase(String merchBaseCase) {
+        this.merchBaseCase = merchBaseCase;
+    }
+
+    public String getGoodsDetail() {
+        return goodsDetail;
+    }
+
+    public void setGoodsDetail(String goodsDetail) {
+        this.goodsDetail = goodsDetail;
+    }
+
+    public String getICPInfo() {
+        return ICPInfo;
+    }
+
+    public void setICPInfo(String ICPInfo) {
+        this.ICPInfo = ICPInfo;
+    }
+
+    public String getHotLineServe() {
+        return HotLineServe;
+    }
+
+    public void setHotLineServe(String hotLineServe) {
+        HotLineServe = hotLineServe;
+    }
+
+    public String getManageScope() {
+        return manageScope;
+    }
+
+    public void setManageScope(String manageScope) {
+        this.manageScope = manageScope;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getUploadFile() {
+        return uploadFile;
+    }
+
+    public void setUploadFile(String uploadFile) {
+        this.uploadFile = uploadFile;
+    }
 }
