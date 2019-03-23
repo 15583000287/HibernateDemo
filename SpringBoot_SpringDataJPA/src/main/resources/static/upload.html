@@ -5,10 +5,19 @@
     <title>文件上传</title>
 </head>
 <body>
-    <form action="fileUploadController" method="post" enctype="multipart/form-data">
-        上传文件：<input type="file" name="filename"><br/>
+    <form action="/merch/web/upload" method="post" enctype="multipart/form-data">
+        上传文件：<input type="file" name="file"><br/>
         <input type="submit" value="上传">
     </form>
-    <a href="http://127.0.0.1:8080/upload/IMG_0442.JPG">下载</a>
+    <hr>
+    <a href="http://127.0.0.1:8080/upload/155334580937820190323085525商户网站审核文件.xlsx">下载</a>
+    <hr>
+    <br>
+    <button onclick="window.location.href='/merch/web/export?page=1&pageSize=100'">导出Excel</button>
+    <hr>
+    <form action="/merch/web/import" method="post" enctype="multipart/form-data">
+        导入Excel：<input type="file" name="file"><br/>
+        <input type="submit" value="上传">
+    </form>
 </body>
 </html>

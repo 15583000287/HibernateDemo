@@ -1,5 +1,7 @@
 package com.example.jpademo.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -9,9 +11,11 @@ import java.util.Date;
 /**
  * 商户网站审核记录
  */
+@Data
 @DynamicUpdate //跟新数据时只会跟新发生改变的值
 @Entity
 @Table(name = "TSL_MERCHWEBAUDITRECORD")
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","operations","roles","menus"}) //解决HttpMessageNotWritableException 序列化Json失败问题
 public class MerchWebAudit {
 
     @Id
@@ -30,13 +34,8 @@ public class MerchWebAudit {
     /**
      * 提交日期
      */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8") //按指定格式解析返回的日期类型的Json数据
     private Date submitDate;
-    /**用于Dto*/
-    @Transient
-    private Date startDate;
-    /**用于Dto*/
-    @Transient
-    private Date endDate;
 
     /**
      * 所属代理商
@@ -84,139 +83,15 @@ public class MerchWebAudit {
      */
     private String uploadFile;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getMerchCusNo() {
-        return merchCusNo;
-    }
-
-    public void setMerchCusNo(String merchCusNo) {
-        this.merchCusNo = merchCusNo;
-    }
-
-    public String getMerchName() {
-        return merchName;
-    }
-
-    public void setMerchName(String merchName) {
-        this.merchName = merchName;
-    }
-
-    public Date getSubmitDate() {
-        return submitDate;
-    }
-
-    public void setSubmitDate(Date submitDate) {
-        this.submitDate = submitDate;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getOfAgent() {
-        return ofAgent;
-    }
-
-    public void setOfAgent(String ofAgent) {
-        this.ofAgent = ofAgent;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getUrlCanOpen() {
-        return urlCanOpen;
-    }
-
-    public void setUrlCanOpen(String urlCanOpen) {
-        this.urlCanOpen = urlCanOpen;
-    }
-
-    public String getGoodsCanOrder() {
-        return goodsCanOrder;
-    }
-
-    public void setGoodsCanOrder(String goodsCanOrder) {
-        this.goodsCanOrder = goodsCanOrder;
-    }
-
-    public String getMerchBaseCase() {
-        return merchBaseCase;
-    }
-
-    public void setMerchBaseCase(String merchBaseCase) {
-        this.merchBaseCase = merchBaseCase;
-    }
-
-    public String getGoodsDetail() {
-        return goodsDetail;
-    }
-
-    public void setGoodsDetail(String goodsDetail) {
-        this.goodsDetail = goodsDetail;
-    }
-
-    public String getICPInfo() {
-        return ICPInfo;
-    }
-
-    public void setICPInfo(String ICPInfo) {
-        this.ICPInfo = ICPInfo;
-    }
-
-    public String getHotLineServe() {
-        return HotLineServe;
-    }
-
-    public void setHotLineServe(String hotLineServe) {
-        HotLineServe = hotLineServe;
-    }
-
-    public String getManageScope() {
-        return manageScope;
-    }
-
-    public void setManageScope(String manageScope) {
-        this.manageScope = manageScope;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public String getUploadFile() {
-        return uploadFile;
-    }
-
-    public void setUploadFile(String uploadFile) {
-        this.uploadFile = uploadFile;
-    }
+    /**用于Dto*/
+    @Transient
+    private Date startDate;
+    @Transient
+    private Date endDate;
+    @Transient
+    private String order;
+    @Transient
+    private String[] orderBy;
 }
