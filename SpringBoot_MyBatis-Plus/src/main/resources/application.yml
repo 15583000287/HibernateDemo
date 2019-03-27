@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver #新的驱动类，是自动加载的，可以省略手动加载驱动类
+    url: jdbc:mysql://139.196.94.253:3306/mybatis_plus?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 123
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*.xml #映射xml文件位置
+  #实体扫描，多个package用逗号或者分号分隔，MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名，
+  #注册后在 Mapper 对应的 XML 文件中可以直接使用类名，而不用使用全限定的类名（即 XML 中调用的时候不用包含包名）。
+  typeAliasesPackage: com.mybatisplus.demo.entity
+  type-aliases-super-type: java.lang.Object #该配置请和 typeAliasesPackage 一起使用，如果配置了该属性，则仅仅会扫描路径下该类的子类对象
+  globalConfig: #MyBatis-Plus 全局策略配置
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 0
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    #该策略约定了如何产出注入的sql,涉及insert,update以及wrapper内部的entity属性生成的 where 条件 :::
+    field-strategy: 2
+    #驼峰下划线转换
+    db-column-underline: true
+    #自动刷新，修改xml文件后不用重启应用
+    refresh: true
+    #数据库大写下划线转换
+    #capital-mode: true
+    #序列接口实现类配置
+    #    key-generator: com.baomidou.mybatisplus.incrementer.OracleKeyGenerator
+    #逻辑删除配置
+    logic-delete-value: 1
+    logic-not-delete-value: 0
+  configuration:
+    map-underscore-to-camel-case: false
+    cache-enabled: false
+    call-setters-on-nulls: true
+    #测试时打印sql语句
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#MyBatis-Plus配置
