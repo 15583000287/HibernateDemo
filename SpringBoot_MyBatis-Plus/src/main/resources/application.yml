@@ -29,6 +29,8 @@ mybatis-plus:
     #逻辑删除配置
     logic-delete-value: 1
     logic-not-delete-value: 0
+    db-config:
+      #table-prefix: xx_  #配置表前缀，如果表前缀都相同则可以配置
   configuration:
     map-underscore-to-camel-case: false
     cache-enabled: false
