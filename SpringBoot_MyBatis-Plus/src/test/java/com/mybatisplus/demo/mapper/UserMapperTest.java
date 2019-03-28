@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.sound.midi.SoundbankResource;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -31,5 +32,10 @@ public class UserMapperTest {
         for(User user: users){
             System.out.println(user);
         }
+    }
+
+    @Test
+    public void deleteByIdTest(){
+       userMapper.deleteById(1);
     }
 }
