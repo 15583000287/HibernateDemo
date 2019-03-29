@@ -7,7 +7,7 @@
         id, name, age
     </sql>
 
-    <delete id="deleteById">
+    <delete id="deleteById2">
          DELETE FROM user WHERE id=#{id}
     </delete>
 
