@@ -5,7 +5,7 @@ spring:
     url: jdbc:mysql://139.196.94.253:3306/mybatis_plus?useUnicode=true&characterEncoding=utf8
     username: root
     password: 123
-
+#MyBatis-Plus配置
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml #映射xml文件位置
   #实体扫描，多个package用逗号或者分号分隔，MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名，
@@ -29,7 +29,7 @@ mybatis-plus:
     #逻辑删除配置
     logic-delete-value: 1
     logic-not-delete-value: 0
-    db-config:
+#    db-config:
       #table-prefix: xx_  #配置表前缀，如果表前缀都相同则可以配置
   configuration:
     #驼峰与下划线映射 默认true
@@ -41,4 +41,3 @@ mybatis-plus:
     #测试时打印sql语句
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-#MyBatis-Plus配置

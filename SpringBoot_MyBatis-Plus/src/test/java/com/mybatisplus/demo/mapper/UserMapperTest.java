@@ -2,8 +2,8 @@ package com.mybatisplus.demo.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.additional.query.impl.QueryChainWrapper;
 import com.mybatisplus.demo.entity.User;
-import org.apache.commons.lang3.RandomUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +52,14 @@ public class UserMapperTest {
     @Test
     public void selectPageTest(){
         Page<User> page = new Page(1,3,true);
+        QueryWrapper wrapper = new QueryWrapper(userMapper);
+        wrapper.eq("name","root");
+//        wrapper.or("name","admin");
         userMapper.selectPage(page,null);
-        System.out.println(page.getCurrent());
-        System.out.println(page.getRecords());
-        System.out.println(page.getSize());
-        System.out.println(page.getTotal());
-        System.out.println(page.getPages());
+        System.out.println("currentPage: "+page.getCurrent());
+        System.out.println("pageSize: "+page.getSize());
+        System.out.println("total: "+page.getTotal());
+        System.out.println("totalPage: "+page.getPages());
+        System.out.println("result: "+page.getRecords());
     }
 }
