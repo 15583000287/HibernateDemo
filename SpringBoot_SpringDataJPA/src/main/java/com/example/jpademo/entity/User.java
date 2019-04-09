@@ -1,9 +1,8 @@
 package com.example.jpademo.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,6 +10,7 @@ import java.util.Date;
 /**
  * 商户网站审核记录
  */
+@Proxy(lazy = false)
 @Data
 @DynamicUpdate //跟新数据时只会跟新发生改变的值
 @Entity

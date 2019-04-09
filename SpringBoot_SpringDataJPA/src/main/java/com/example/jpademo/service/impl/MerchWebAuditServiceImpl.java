@@ -4,9 +4,9 @@ import com.example.jpademo.entity.MerchWebAudit;
 import com.example.jpademo.exception.MobaoException;
 import com.example.jpademo.repository.MerchWebAuditRepository;
 import com.example.jpademo.service.IMerchWebAuditService;
-
 import com.example.jpademo.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +35,7 @@ public class MerchWebAuditServiceImpl implements IMerchWebAuditService {
     }
 
     @Override
+    @Cacheable(value = "webAudit",key = "#id") //此注解将当前方法的结果缓存到Ehcache中，key为当前缓存值的键，是否到缓存中查找取决于是否存在相同的key
     public MerchWebAudit findByid(Long id) {
         MerchWebAudit result = merchWebAuditRepository.getOne(id);
         if(result == null){
