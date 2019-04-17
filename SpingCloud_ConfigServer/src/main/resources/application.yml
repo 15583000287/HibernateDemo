@@ -1,0 +1,31 @@
+server:
+  port: 8888
+spring:
+  application:
+    #指定应用程序名，会到注册到Eureka
+    name: spring-cloud-config-server
+  cloud:
+    config:
+      server:
+        default-application-name: config-server
+        git:
+          # 配置git仓库地址
+          uri: https://github.com/15583000287/myspringcloudconfig
+          # 配置仓库路径 (git仓库地址下的相对地址，可以配置多个，用,分割)
+          search-paths: config_file
+          # 访问git仓库的用户名
+          username: 15583000287
+          # 访问git仓库的用户密码 如果Git仓库为公开仓库，可以不填写用户名和密码，如果是私有仓库需要填写
+          password:
+      # 配置仓库的分支
+      label: master
+eureka:
+  client:
+    service-url:
+      #将ConfigServer配置服务器以一个服务注册到Eureka（可以开启多个ConfigServer程序，实现集群），客户端通过Eureka找配置服务器的地址
+      defaultZone: http://139.196.94.253:8761/eureka/
+  instance:
+    #写定IP
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    prefer-ip-address: true
+
