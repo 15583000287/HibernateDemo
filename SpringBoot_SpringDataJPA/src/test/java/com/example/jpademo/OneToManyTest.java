@@ -7,7 +7,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 一对多关联关系测试
@@ -43,11 +45,15 @@ public class OneToManyTest {
     /**
      *一对多关联查询
      */
+    @Transactional
+    @Rollback(false)
     @Test
     public void findTest(){
+        //延迟初始化(懒加载)异常  给查询的实体类加 @Proxy(lazy = false)
+        //org.hibernate.LazyInitializationException: could not initialize proxy [com.example.jpademo.entity.User#1] - no Session
         User user = userRepository.getOne(1L);
         System.out.println(user);
         Role role = user.getRole();
-        System.out.println(role);
+        System.out.println(role.getRoleName());
     }
 }

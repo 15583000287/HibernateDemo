@@ -1,11 +1,21 @@
+server:
+  port: 8080
 spring:
+  application:
+    name: SpringBoot_SpringDataJPA
+  #上传文件配置 springboot2.0
+  servlet:
+    multipart:
+      max-file-size: 20MB #设置单个文件上传大小（默认10MB）
+      max-request-size: 200MB #设置一次请求上传文件的总容量
+  #数据源配置
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver #新的驱动类，是自动加载的，可以省略手动加载驱动类
     url: jdbc:mysql://139.196.94.253:3306/jpa?useUnicode=true&characterEncoding=utf8
     username: root
     password: 123
-
+  #JPA相关配置
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,13 +24,75 @@ spring:
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL5Dialect
     database: mysql
+    jpa:
+      properties:
+        hibernate:
+          enable_lazy_load_no_trans: true
+
+#Eureka配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://139.196.94.253:8761/eureka/
+  instance:
+    #写定IP
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    prefer-ip-address: true
+
+#Spring Boot Actuator
+#info 就是我们自己配置在配置文件中以 info 开头的配置信息,启动示例项目，访问：http://localhost:8080/actuator/info 会返回信息(注意：貌似不能配置4 级属性)
+info:
+  app:
+    name: spring-dataJpa-actuator
+    version: 1.0.0
+    test: test
+    description: 监控测试
+  #使用方式(自定义)
+  used:
+    #路径	     描述
+    /auditevents: 显示应用暴露的审计事件 (比如认证进入、订单失败)
+    /beans: 描述应用程序上下文里全部的 Bean，以及它们的关系
+    /conditions: 就是 1.0 的 /autoconfig ，提供一份自动配置生效的条件情况，记录哪些自动配置条件通过了，哪些没通过
+    /configprops: 描述配置属性(包含默认值)如何注入Bean
+    /env: 获取全部环境属性
+    /env/{name}: 根据名称获取特定的环境属性值
+    /flyway: 提供一份 Flyway 数据库迁移信息
+    /liquidbase: 显示Liquibase 数据库迁移的纤细信息
+    /health: 报告应用程序的健康指标，这些值由 HealthIndicator 的实现类提供
+    /heapdump: dump 一份应用的 JVM 堆信息
+    /httptrace: 显示HTTP足迹，最近100个HTTP request/repsponse
+    /info: 获取应用程序的定制信息，这些信息由info打头的属性提供
+    /logfile: 返回log file中的内容(如果 logging.file 或者 logging.path 被设置)
+    /loggers: 显示和修改配置的loggers
+    /metrics: 报告各种应用程序度量信息，比如内存用量和HTTP请求计数
+    /metrics/{name}: 报告指定名称的应用程序度量值
+    /scheduledtasks: 展示应用中的定时任务信息
+    /sessions: 如果我们使用了 Spring Session 展示应用中的 HTTP sessions 信息
+    /shutdown: 关闭应用程序，要求endpoints.shutdown.enabled设置为true(Post)
+    /mappings: 描述全部的 URI路径，以及它们和控制器(包含Actuator端点)的映射关系
+    /threaddump: 获取线程活动的快照
+
+management:
+  endpoints:
+    web:
+      exposure:
+        #Spring Boot 2.x 中为了安全期间，Actuator 只开放了两个端点 /actuator/health 和 /actuator/info，设置打开所有的监控点
+        include: "*"
+      #actuator路径定制 Actuator 默认所有的监控点路径都在/actuator/*，当然如果有需要这个路径也支持定制
+      #base-path: /manage  #配置后访问路径为/manage/*
+  endpoint:
+    shutdown:
+      #启用接口关闭 Spring Boot
+      enabled: true
+    health: #（注意: 是endpoint下的属性）
+      #/actuator/health时，我们获取到的信息是{"status":"UP"}，status的值还有可能是 DOWN。
+      #除always之外还有when-authorized、never，默认值是never（details中所有的监控项中的任何一个健康状态是DOWN，整体应用的健康状态也是DOWN）
+      #Spring boot框架中包含了大量的HealthIndicators的实现类，由HealthAggregator类汇总
+      show-details: always
 
 
-#上传文件配置 springboot2.0
-  servlet:
-    multipart:
-      max-file-size: 20MB #设置单个文件上传大小（默认10MB）
-      max-request-size: 200MB #设置一次请求上传文件的总容量
+
+
 
 
 #Oracle配置信息
